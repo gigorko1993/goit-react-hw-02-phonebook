@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
+import { v4 as uuidv4 } from "uuid";
 
 class ContactForm extends Component {
   state = {
@@ -7,47 +7,58 @@ class ContactForm extends Component {
     number: "",
   };
 
-  getValue = (e) => {
-    const { name, value } = e.currentTarget;
-    this.setState({ [name]: value });
+  onChange = (e) => {
+    this.setState({
+      [e.currentTarget.name]: e.currentTarget.value,
+    });
   };
 
-  handleChange = (e) => {
+  onSubmit = (e) => {
     e.preventDefault();
-    this.props.submit(this.state);
+
+    const newContact = {
+      id: uuidv4(),
+      name: this.state.name,
+      number: this.state.number,
+    };
+
+    this.props.addContact(newContact);
+
     this.reset();
   };
 
   reset = () => {
-    this.setState({ name: "", number: "" });
+    this.setState({
+      name: "",
+      number: "",
+    });
   };
 
   render() {
-    const { name, number } = this.state;
     return (
-      <form onSubmit={this.handleChange}>
+      <form onSubmit={this.onSubmit}>
         <label>
           Name
           <input
+            onChange={this.onChange}
             type="text"
+            value={this.state.name}
             name="name"
             pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
             title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
             required
-            onChange={this.getValue}
-            value={name}
           />
         </label>
         <label>
           Number
           <input
+            onChange={this.onChange}
             type="tel"
             name="number"
             pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
             title="Номер телефона должен состоять цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"
+            value={this.state.number}
             required
-            value={number}
-            onChange={this.getValue}
           />
         </label>
         <button type="submit">Add contact</button>
@@ -55,9 +66,5 @@ class ContactForm extends Component {
     );
   }
 }
-
-ContactForm.propTypes = {
-  submit: PropTypes.func.isRequired,
-};
 
 export default ContactForm;

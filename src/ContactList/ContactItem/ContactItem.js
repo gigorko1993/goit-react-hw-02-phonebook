@@ -1,5 +1,3 @@
-import React from "react";
-
 const ContactItem = ({ removeContact, contacts }) => {
   return contacts.map(({ name, number, id }) => {
     return (
