@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import ContactForm from "./ContactForm";
 import Filter from "./Filter";
 import ContactList from "./ContactList";
+import s from "./App.module.css";
 
 class App extends Component {
   state = {
@@ -16,12 +17,12 @@ class App extends Component {
   };
 
   addContact = (newContact) => {
-    const contactPresenceCheck = this.state.contacts.find(
+    const contactCheck = this.state.contacts.find(
       ({ name }) => name === newContact.name
     );
 
-    if (contactPresenceCheck !== undefined) {
-      alert(`${newContact.name} is already in contacts`);
+    if (contactCheck !== undefined) {
+      alert(`${newContact.name} is already in contact`);
       return;
     }
 
@@ -50,9 +51,9 @@ class App extends Component {
 
     return (
       <div>
-        <h1>Phonebook</h1>
+        <h1 className={s.title}>Phonebook</h1>
         <ContactForm addContact={this.addContact} />
-        <h2>Contacts</h2>
+        <h2 className={s.title}>Contacts</h2>
         <Filter value={this.state.filter} onChange={this.onChange} />
         <ContactList
           removeContact={this.removeContact}

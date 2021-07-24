@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { v4 as uuidv4 } from "uuid";
+import s from "./ContactForm.module.css";
 
 class ContactForm extends Component {
   state = {
@@ -8,8 +9,9 @@ class ContactForm extends Component {
   };
 
   onChange = (e) => {
+    const { name, value } = e.currentTarget;
     this.setState({
-      [e.currentTarget.name]: e.currentTarget.value,
+      [name]: value,
     });
   };
 
@@ -36,10 +38,11 @@ class ContactForm extends Component {
 
   render() {
     return (
-      <form onSubmit={this.onSubmit}>
-        <label>
+      <form className={s.form} onSubmit={this.onSubmit}>
+        <label className={s.label}>
           Name
           <input
+            className={s.input}
             onChange={this.onChange}
             type="text"
             value={this.state.name}
@@ -49,9 +52,10 @@ class ContactForm extends Component {
             required
           />
         </label>
-        <label>
+        <label className={s.label}>
           Number
           <input
+            className={s.input}
             onChange={this.onChange}
             type="tel"
             name="number"
@@ -61,7 +65,9 @@ class ContactForm extends Component {
             required
           />
         </label>
-        <button type="submit">Add contact</button>
+        <button className={s.button} type="submit">
+          Add contact
+        </button>
       </form>
     );
   }
